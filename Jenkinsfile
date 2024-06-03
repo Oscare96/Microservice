@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            image 'docker:19.03.12' // Use appropriate Docker image version
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     stages {
         stage('Build Docker Image') {
             steps {
@@ -19,3 +23,4 @@ pipeline {
         }
     }
 }
+
