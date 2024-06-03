@@ -1,26 +1,21 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:19.03.12' // Use appropriate Docker image version
-            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
+
     stages {
-        stage('Build Docker Image') {
+        stage('build Docker Image') {
             steps {
-                withDockerRegistry(credentialsId: 'docker-cred', url: 'https://index.docker.io/v1/') {
+                withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker', url: '0scar996') {
                     sh "docker build -t oscar/frontend:latest ."
                 }
             }
         }
         
-        stage('Push Docker Image') {
+        stage('push Docker Image') {
             steps {
-                withDockerRegistry(credentialsId: 'docker-cred', url: 'https://index.docker.io/v1/') {
+                withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker', url: '0scar996') {
                     sh "docker push oscar/frontend:latest"
                 }
             }
         }
     }
 }
-
